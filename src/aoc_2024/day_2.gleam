@@ -72,12 +72,10 @@ fn do_lists_without_one(
 
 pub fn pt_2(input: Parsed) -> Int {
   use numbers <- list.count(input)
+  use numbers <- list.any([numbers, ..lists_without_one(numbers)])
 
-  [numbers, ..lists_without_one(numbers)]
-  |> list.any(fn(numbers) {
-    let assert Ok(differences) = map_difference(numbers)
+  let assert Ok(differences) = map_difference(numbers)
 
-    list.all(differences, fn(num) { num <= 3 && num >= 1 })
-    || list.all(differences, fn(num) { num >= -3 && num <= -1 })
-  })
+  list.all(differences, fn(num) { num <= 3 && num >= 1 })
+  || list.all(differences, fn(num) { num >= -3 && num <= -1 })
 }
