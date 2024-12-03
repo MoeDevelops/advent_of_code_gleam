@@ -46,33 +46,12 @@ pub fn pt_1(input: Parsed) -> Int {
   || list.all(differences, fn(num) { num >= -3 && num <= -1 })
 }
 
-fn lists_without_one(list: List(a)) -> List(List(a)) {
-  case list {
-    [] -> []
-    [_] -> [[]]
-    [first, ..rest] -> do_lists_without_one([], first, rest, [])
-  }
-}
-
-fn do_lists_without_one(
-  before: List(a),
-  current: a,
-  after: List(a),
-  lists: List(List(a)),
-) -> List(List(a)) {
-  case after {
-    [next, ..rest] ->
-      do_lists_without_one(list.append(before, [current]), next, rest, [
-        list.append(before, after),
-        ..lists
-      ])
-    [] -> [before, ..lists]
-  }
-}
-
 pub fn pt_2(input: Parsed) -> Int {
   use numbers <- list.count(input)
-  use numbers <- list.any([numbers, ..lists_without_one(numbers)])
+  use numbers <- list.any([
+    numbers,
+    ..list.combinations(numbers, list.count(numbers, fn(_) { True }) - 1)
+  ])
 
   let assert Ok(differences) = map_difference(numbers)
 
