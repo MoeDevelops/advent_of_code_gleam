@@ -50,7 +50,7 @@ pub fn pt_2(input: Parsed) -> Int {
   use numbers <- list.count(input)
   use numbers <- list.any([
     numbers,
-    ..list.combinations(numbers, list.count(numbers, fn(_) { True }) - 1)
+    ..list.combinations(numbers, list.length(numbers) - 1)
   ])
 
   let assert Ok(differences) = map_difference(numbers)
